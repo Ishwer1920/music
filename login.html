@@ -1,0 +1,75 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Your Account</h2>
+    <form class="login-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+      
+
+      <p class="signup-link">
+        Don't have an account? <a href="#">Sign up</a>
+      </p>
+
+      <div id="g_id_signin"></div>
+    </form>
+  </div>
+
+  <script>
+    // Replace with your real Google Client ID
+    const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE";
+
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        {
+          theme: "outline",
+          size: "large",
+          width: "100%",
+          text: "continue_with",
+          shape: "pill",
+        }
+      );
+
+      google.accounts.id.prompt(); // shows the one-tap prompt
+    };
+
+    function handleCredentialResponse(response) {
+      // Decode JWT token
+      const data = parseJwt(response.credential);
+      console.log("User info:", data);
+
+      // Simulate login
+      alert("Welcome, " + data.name);
+      window.location.href = "index.html"; // redirect to home
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+
+      return JSON.parse(jsonPayload);
+    }
+  </script>
+</body>
+</html> -->

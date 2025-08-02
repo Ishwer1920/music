@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Photo Gallery</title>
+  <link rel="stylesheet" href="css/photos.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="home_page.html">Home</a>
+    <a href="music.html">Music</a>
+    <a href="photos.html">Photos</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+
+  <header>
+    <h1 class="gallery-title">Music Gallery</h1>
+  </header>
+
+  <div class="add-image-bar">
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="addImage()">Add Image</button>
+    <button onclick="toggleRemoveMode()">Remove Images</button>
+    <button id="deleteSelected" style="display: none;" onclick="deleteSelectedImages()">Delete Selected</button>
+  </div>
+
+  <main class="gallery" id="gallery">
+    <!-- Image cards will be added here dynamically -->
+  </main>
+
+  <!-- Fullscreen Modal -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <img id="modalImage" />
+  </div>
+
+  <script>
+    let removeMode = false;
+
+    function addImage() {
+      const input = document.getElementById("imageInput");
+      const gallery = document.getElementById("gallery");
+
+      if (input.files.length === 0) return;
+
+      const file = input.files[0];
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files are allowed.");
+        return;
+      }
+
+      const url = URL.createObjectURL(file);
+
+      const card = document.createElement("div");
+      card.className = "photo-card";
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "User Image";
+      img.onclick = function () {
+        if (!removeMode) openModal(img);
+      };
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "select-checkbox";
+
+      card.appendChild(img);
+      card.appendChild(checkbox);
+      gallery.appendChild(card);
+
+      input.value = "";
+    }
+
+    function toggleRemoveMode() {
+      removeMode = !removeMode;
+      const checkboxes = document.querySelectorAll(".select-checkbox");
+      const deleteBtn = document.getElementById("deleteSelected");
+
+      checkboxes.forEach(cb => {
+        cb.style.display = removeMode ? "block" : "none";
+      });
+
+      deleteBtn.style.display = removeMode ? "inline-block" : "none";
+    }
+
+    function deleteSelectedImages() {
+      const checkboxes = document.querySelectorAll(".select-checkbox");
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          cb.parentElement.remove();
+        }
+      });
+      toggleRemoveMode(); // Exit remove mode after deletion
+    }
+
+    function openModal(img) {
+      const modal = document.getElementById("imageModal");
+      const modalImg = document.getElementById("modalImage");
+      modalImg.src = img.src;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("imageModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>

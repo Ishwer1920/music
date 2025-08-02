@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="css/music.css" />
+  <title>Playlist</title>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="home_page.html">Home</a>
+      <a href="music.html">Music</a>
+      <a href="photos.html">Photos</a>
+      <a href="blog.html">Blog</a>
+    </div>
+  </nav>
+
+  <div class="playlist-wrapper">
+    <div class="playlist">
+      <h1>Playlist</h1>
+      <p>Let's Play Music</p>
+
+      <ul id="songList">
+        <li>
+          <span>Music 1:</span>
+          <audio controls src="media/music_1.mp3"></audio>
+          <button class="remove-btn" onclick="removeSong(this)">Remove</button>
+        </li>
+        <li>
+          <span>Music 2:</span>
+          <audio controls src="media/music_2.mp3"></audio>
+          <button class="remove-btn" onclick="removeSong(this)">Remove</button>
+        </li>
+        <li>
+          <span>Music 3:</span>
+          <audio controls src="media/music_3.mp3"></audio>
+          <button class="remove-btn" onclick="removeSong(this)">Remove</button>
+        </li>
+      </ul>
+
+      <div class="add-song">
+        <input type="file" id="songInput" accept="audio/*" />
+        <button onclick="addSong()">Add Song</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function addSong() {
+      const input = document.getElementById("songInput");
+      const list = document.getElementById("songList");
+
+      if (input.files.length === 0) return;
+
+      const file = input.files[0];
+      const url = URL.createObjectURL(file);
+
+      const li = document.createElement("li");
+
+      const span = document.createElement("span");
+      span.textContent = file.name.split('.').slice(0, -1).join('.') + ":";
+
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = url;
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove";
+      removeBtn.className = "remove-btn";
+      removeBtn.onclick = function () {
+        removeSong(removeBtn);
+      };
+
+      li.appendChild(span);
+      li.appendChild(audio);
+      li.appendChild(removeBtn);
+
+      list.appendChild(li);
+      input.value = "";
+    }
+
+    function removeSong(button) {
+      const li = button.parentElement;
+      li.remove();
+    }
+  </script>
+</body>
+</html>
